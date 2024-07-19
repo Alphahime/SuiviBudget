@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi de Dépenses Budgétaires</title>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-database-compat.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <nav id="sidebar">
+    <ul>
+      <li><a href="#" onclick="showSection('dashboard')">Tableau de bord</a></li>
+      <li><a href="#" onclick="showSection('shopping-list')">Liste de courses</a></li>
+      <li><a href="#" onclick="showSection('history')">Historique</a></li>
+      <li><a href="#" onclick="showSection('settings')">Paramètres</a></li>
+      <li><a href="#">Déconnexion</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="date-box" id="date-box">
+      <span>Solde</span>
+      <h2 id="total-amount"></h2>
+    </div>
+    <div class="filter-box" id="filter-box">
+      <label for="filter-date"></label>
+      <input type="date" id="filter-date" name="filter-date" onchange="filterExpensesByDate(event)">
+    </div>
+    <div class="add-button" onclick="toggleAddExpenseForm()">+</div>
+    <div class="task-list" id="task-list">
+      <!-- Les dépenses seront ajoutées ici dynamiquement -->
+    </div>
+    <div class="add-task" id="add-task" style="display: none;">
+      <h2>Ajouter une dépense</h2>
+      <form id="add-expense-form" onsubmit="submitExpenseForm(event)">
+        <label for="product-name">Nom du produit</label>
+        <input type="text" id="product-name" name="product-name" required>
+        
+        <label for="product-price">Prix du produit</label>
+        <input type="number" id="product-price" name="product-price" required>
+        
+        <label for="product-quantity">Quantité</label>
+        <input type="number" id="product-quantity" name="product-quantity" required>
+
+        <label for="product-date">Date</label>
+        <input type="date" id="product-date" name="product-date" required>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+    <div id="shopping-list" style="display: none;">
+      <h2>Liste des courses</h2>
+      <div class="task-list" id="shopping-list-tasks">
+        <!-- Les dépenses seront ajoutées ici dynamiquement -->
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="script.js"></script>
+  <script src="sidebar.js"></script>
+</body>
+</html>
