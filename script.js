@@ -1,26 +1,22 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
 import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
-// Firebase configuration for Realtime Database
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDBQEMs0rEyWZbBsjsbDgE2UyM3SNsbjM8",
-    authDomain: "boite-360d0.firebaseapp.com",
-    projectId: "boite-360d0",
-    databaseURL: "https://boiteidee-b74cc-default-rtdb.firebaseio.com",
-    storageBucket: "boite-360d0.appspot.com",
-    messagingSenderId: "618849748862",
-    appId: "1:618849748862:web:bf5419a1ab74bb98ae952f",
-    measurementId: "G-S85GBMHT7F"
-};
+    apiKey: "AIzaSyDZ0SmJGwjxI5qe71g_dqZdBbqcE6ptgHw",
+    authDomain: "budget-8005b.firebaseapp.com",
+    databaseURL: "https://budget-8005b-default-rtdb.firebaseio.com",
+    projectId: "budget-8005b",
+    storageBucket: "budget-8005b.appspot.com",
+    messagingSenderId: "47731293514",
+    appId: "1:47731293514:web:69ac0c81b184124ee595b3",
+    measurementId: "G-66WYZ6ZXSR"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
-function toggleAddExpenseForm() {
-    const addTaskForm = document.getElementById('add-task');
-    addTaskForm.style.display = addTaskForm.style.display === 'none' ? 'block' : 'none';
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const addExpenseForm = document.getElementById('add-expense-form');
@@ -98,11 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 shoppingList.appendChild(shoppingListElement);
             });
 
-            totalAmountElement.innerText = `Total: ${totalAmount} XOF`;
+            totalAmountElement.innerText = ` Total ${totalAmount} XOF`;
             attachEventHandlers();
         });
     }
-
     function createExpenseElement(id, expense, forShoppingList = false) {
         const expenseElement = document.createElement('div');
         expenseElement.classList.add('expense');
@@ -111,18 +106,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         expenseElement.innerHTML = `
             <h3>${expense.name}</h3>
-            <p>Prix: ${expense.price} €</p>
+            <p>Prix: ${expense.price} xof</p>
             <p>Quantité: ${expense.quantity}</p>
             <p>Date: ${expense.date}</p>
             <input type="checkbox" class="mark-as-bought" data-id="${id}" ${expense.bought ? 'checked' : ''}>
             ${forShoppingList ? `
                 <div class="actions">
-                    <button class="edit" data-id="${id}">Modifier</button>
-                    <button class="delete" data-id="${id}">Supprimer</button>
+                    <button class="edit" data-id="${id}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="delete" data-id="${id}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>` : ''}
         `;
         return expenseElement;
     }
+    
 
     function attachEventHandlers() {
         const deleteButtons = document.querySelectorAll('.delete');
@@ -153,7 +153,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deleteExpense(id) {
-        kindOfDelete(id);
+        remove(ref(db, `expenses/${id}`))
+        .then(() => {
+            showMessage('success', 'Dépense supprimée avec succès !');
+            displayExpenses();
+        })
+        .catch(error => {
+            console.error('Error deleting expense:', error);
+            showMessage('error', 'Erreur lors de la suppression de la dépense : ' + error.message);
+        });
     }
 
     function editExpense(id) {
@@ -164,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('product-price').value = expense.price;
             document.getElementById('product-quantity').value = expense.quantity;
             document.getElementById('product-date').value = expense.date;
-            toggleAddExpenseForm();
+            toggleAddExpenseForm(); // Afficher le formulaire pour la modification
             document.getElementById('add-expense-form').onsubmit = function(event) {
                 event.preventDefault();
                 const updatedName = document.getElementById('product-name').value.trim();
@@ -177,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         });
     }
-
+    
     function updateExpense(id, name, price, quantity, date) {
         const expenseRef = ref(db, `expenses/${id}`);
         update(expenseRef, {
@@ -198,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage('error', 'Erreur lors de la mise à jour de la dépense : ' + error.message);
         });
     }
+    
 
     function updateExpenseStatus(id, bought) {
         const expenseRef = ref(db, `expenses/${id}`);
@@ -213,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showMessage(type, message) {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message', type);
+        messageElement.className = `message ${type}`;
         messageElement.innerText = message;
         document.body.appendChild(messageElement);
         setTimeout(() => {
@@ -221,36 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    function filterExpensesByDate(event) {
-        const selectedDate = event.target.value;
-        onValue(ref(db, 'expenses'), snapshot => {
-            taskList.innerHTML = '';
-            shoppingList.innerHTML = '';
-            let totalAmount = 0;
-
-            snapshot.forEach(childSnapshot => {
-                const expense = childSnapshot.val();
-                if (expense.date === selectedDate) {
-                    totalAmount += expense.price * expense.quantity;
-                    const expenseElement = createExpenseElement(childSnapshot.key, expense);
-                    const shoppingListElement = createExpenseElement(childSnapshot.key, expense, true);
-                    taskList.appendChild(expenseElement);
-                    shoppingList.appendChild(shoppingListElement);
-                }
-            });
-
-            totalAmountElement.innerText = `Total: ${totalAmount} €`;
-        });
+    function toggleAddExpenseForm() {
+        const addExpenseSection = document.getElementById('add-expense-section');
+        addExpenseSection.classList.toggle('hidden');
     }
 
     function submitExpenseForm(event) {
         event.preventDefault();
-
         const productName = document.getElementById('product-name').value.trim();
         const productPrice = parseFloat(document.getElementById('product-price').value);
         const productQuantity = parseInt(document.getElementById('product-quantity').value);
         const productDate = document.getElementById('product-date').value;
-
         if (validateForm(productName, productPrice, productQuantity, productDate)) {
             addExpense(productName, productPrice, productQuantity, productDate);
             addExpenseForm.reset();
@@ -258,5 +248,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    displayExpenses(); // Initial call to display expenses
+    displayExpenses();
 });
