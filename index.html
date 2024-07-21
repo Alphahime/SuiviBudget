@@ -6,12 +6,11 @@
   <title>Suivi de Dépenses Budgétaires</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-database-compat.js"></script>
   <link rel="stylesheet" href="styles.css">
   <style>
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -26,7 +25,7 @@
       <li><a href="#" onclick="showSection('shopping-list')">Liste de courses</a></li>
       <li><a href="#" onclick="showSection('history')">Historique</a></li>
       <li><a href="#" onclick="showSection('settings')">Paramètres</a></li>
-      <li><a href="#">Déconnexion</a></li>
+      <button id="logout" class="hidden">Déconnexion</button>
     </ul>
   </nav>
 
@@ -40,14 +39,14 @@
       <button id="filter-button" onclick="applyFilter()">Filtrer</button>
     </div>
     
-    <div class="add-button" onclick="window.location.href='add-expense.html'">+</div>
+    <div class="add-button" id="add-expense-button">+</div>
 
     <div class="task-list" id="task-list">
       <!-- Les dépenses seront ajoutées ici dynamiquement -->
     </div>
-    <div class="add-task" id="add-task" style="display: none;">
+    <div class="add-task hidden" id="add-task">
       <h2>Ajouter une dépense</h2>
-      <form id="add-expense-form" onsubmit="submitExpenseForm(event)">
+      <form id="add-expense-form">
         <label for="product-name">Nom du produit</label>
         <input type="text" id="product-name" name="product-name" required>
         
@@ -62,11 +61,37 @@
         <button type="submit">Ajouter</button>
       </form>
     </div>
-    <div id="shopping-list" style="display: none;">
+    <div id="shopping-list" class="hidden">
       <h2>Liste des courses</h2>
       <div class="task-list" id="shopping-list-tasks">
         <!-- Les dépenses seront ajoutées ici dynamiquement -->
       </div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-section" class="hidden">
+      <h2>Se connecter</h2>
+      <form id="login-form">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" required>
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" required>
+        <button type="submit">Se connecter</button>
+        <p>Pas encore de compte? <a href="#" id="show-register-form">Inscrivez-vous</a></p>
+      </form>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register-section" class="hidden">
+      <h2>Créer un compte</h2>
+      <form id="register-form">
+        <label for="register-email">Email</label>
+        <input type="email" id="register-email" required>
+        <label for="register-password">Mot de passe</label>
+        <input type="password" id="register-password" required>
+        <button type="submit">S'inscrire</button>
+        <p>Déjà un compte? <a href="#" id="show-login-form">Connectez-vous</a></p>
+      </form>
     </div>
   </main>
 

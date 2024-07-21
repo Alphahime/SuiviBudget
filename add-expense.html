@@ -8,6 +8,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-database-compat.js"></script>
   <link rel="stylesheet" href="add.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module">
+    import { onAuthStateChanged } from './firebaseConfig.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      onAuthStateChanged(user => {
+        if (!user) {
+          window.location.href = 'signin.html'; // Rediriger vers la page de connexion si non authentifié
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="add-task" id="add-task">

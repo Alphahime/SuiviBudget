@@ -219,3 +219,15 @@ body {
 .actions button:hover i {
     color: #2ec4b5b0;
 }
+/* styles.css */
+.hidden {
+  display: none;
+}
+
+.message {
+  color: red; /* ou une autre couleur pour les messages */
+}
+
+.message.success {
+  color: green; /* ou une autre couleur pour les messages de succès */
+}
