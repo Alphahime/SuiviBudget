@@ -238,7 +238,9 @@ button {
 .message.success {
   color: green; 
 }
-
+.hidden{
+  display: none;
+}
 /* Desktop-specific styles */
 @media (min-width: 768px) {
   nav {
