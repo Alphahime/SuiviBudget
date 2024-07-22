@@ -1,7 +1,8 @@
+//import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
 import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
-
+//const auth = getAuth();
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyDZ0SmJGwjxI5qe71g_dqZdBbqcE6ptgHw",
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleAddExpenseForm(); // Masquer le formulaire après ajout
         }
     });
-
+  
     function validateForm(name, price, quantity, date) {
         if (name === '') {
             showMessage('error', 'Le nom du produit est requis.');
@@ -81,10 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayExpenses() {
         onValue(ref(db, 'expenses'), snapshot => {
+            console.log('Données reçues:', snapshot.val()); // Log pour débogage
             taskList.innerHTML = '';
             shoppingList.innerHTML = '';
             let totalAmount = 0;
-
+    
             snapshot.forEach(childSnapshot => {
                 const expense = childSnapshot.val();
                 totalAmount += expense.price * expense.quantity;
@@ -93,11 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskList.appendChild(expenseElement);
                 shoppingList.appendChild(shoppingListElement);
             });
-
-            totalAmountElement.innerText = ` Total ${totalAmount} XOF`;
+    
+            totalAmountElement.innerText = `Total ${totalAmount} XOF`;
             attachEventHandlers();
         });
     }
+    
     function createExpenseElement(id, expense, forShoppingList = false) {
         const expenseElement = document.createElement('div');
         expenseElement.classList.add('expense');
@@ -249,4 +252,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     displayExpenses();
+    const filterButton = document.getElementById('filter-button');
+    filterButton.addEventListener('click', applyFilter);
+
+    function filterExpensesByDate(date) {
+        if (date) {
+            onValue(ref(db, 'expenses'), snapshot => {
+                taskList.innerHTML = '';
+                shoppingList.innerHTML = '';
+                let totalAmount = 0;
+
+                snapshot.forEach(childSnapshot => {
+                    const expense = childSnapshot.val();
+                    if (expense.date === date) {
+                        totalAmount += expense.price * expense.quantity;
+                        const expenseElement = createExpenseElement(childSnapshot.key, expense);
+                        const shoppingListElement = createExpenseElement(childSnapshot.key, expense, true);
+                        taskList.appendChild(expenseElement);
+                        shoppingList.appendChild(shoppingListElement);
+                    }
+                });
+
+                totalAmountElement.innerText = `Total ${totalAmount} XOF`;
+                attachEventHandlers();
+            });
+        } else {
+            displayExpenses(); // Si aucune date sélectionnée, ON affiche toutes les dépenses
+        }
+    }
+
+    function applyFilter() {
+        const filterDate = document.getElementById('filter-date').value;
+        filterExpensesByDate(filterDate);
+    }
+
+    
 });

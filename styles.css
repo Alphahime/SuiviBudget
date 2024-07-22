@@ -1,233 +1,275 @@
-*{
+
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  header {
-    width: 100%;
-    background-color: #CBF3F0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    font-size: 24px;
-  }
-  
-  .title {
-    font-size: 18px;
-  }
-  
-  .menu-icon {
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100%;
-    background-color: #2EC4B6;
-    color: rgb(0, 0, 0);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    border-radius: 1rem;
-    font-size: 20px;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-    color: black;
-  }
-  
-  nav ul li {
-    padding: 15px;
-    border-bottom: 1px solid #444;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  main {
-    margin-top: 20px;
-    width: 90%;
-    background-color: #cbf3f07b;
-  }
-  
-  .date-box {
-    text-align: center;
-    width: 100%;
-    height: 100px;
-    border-radius: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #2EC4B6;
-  }
-  
-  .task-list {
-    margin-top: 20px;
-  }
-  
-  .task {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .task-name, .task-price, .task-quantity {
-    flex: 1;
-  }
-  .add-button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #2EC4B6;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    cursor: pointer;
-    margin: 20px auto;
-    position: fixed;
-    margin-left: 19rem;
-    margin-top: 20rem;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  form label {
-    margin-top: 10px;
-  }
-  
-  form input {
-    padding: 5px;
-    margin-top: 5px;
-  }
-  
-  form button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-
-  .expense {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .expense h3 {
-    margin: 0;
-  }
-  
-  .expense p {
-    margin: 0 10px;
-  }
-  
-  .confirm-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  .confirm-popup .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  button {
-    padding: 10px;
-    cursor: pointer;
-  }
-  .expense.checked {
-    background-color: lightgreen;
-  }
-  .filter-box {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
-    border-radius: 0.5rem;
-    background-color: white;
-  }
-  
-  .filter-box input {
-    flex: 1; 
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .filter-box button {
-    background-color: #2EC4B6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  
-  .filter-box button:hover {
-    background-color: #2ec4b5b0;
-  }
-  
-  .actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2em;
-    margin: 0 5px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+header {
+  width: 100%;
+  background-color: #CBF3F0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.title {
+  font-size: 18px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  background-color: #2EC4B6;
+  color: rgb(0, 0, 0);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  border-radius: 1rem;
+  font-size: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  color: black;
+}
+
+nav ul li {
+  padding: 15px;
+  border-bottom: 1px solid #444;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  margin-top: 20px;
+  width: 90%;
+  background-color: #cbf3f07b;
+}
+
+.date-box {
+  text-align: center;
+  width: 100%;
+  height: 100px;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2EC4B6;
+}
+
+.task-list {
+  margin-top: 20px;
+}
+
+.task {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-name, .task-price, .task-quantity {
+  flex: 1;
+}
+
+.add-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #2EC4B6;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 20px auto;
+  position: fixed;
+  margin-left: 19rem;
+  margin-top: 20rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-top: 10px;
+}
+
+form input {
+  padding: 5px;
+  margin-top: 5px;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.expense {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.expense h3 {
+  margin: 0;
+}
+
+.expense p {
+  margin: 0 10px;
+}
+
+.confirm-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-popup .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.expense.checked {
+  background-color: lightgreen;
+}
+
+.filter-box {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+.filter-box input {
+  flex: 1;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+.filter-box button {
+  background-color: #2EC4B6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.filter-box button:hover {
+  background-color: #2ec4b5b0;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin: 0 5px;
+}
+
 .actions button i {
-    color: #333;
+  color: #333;
 }
+
 .actions button:hover i {
-    color: #2ec4b5b0;
+  color: #2ec4b5b0;
 }
-/* styles.css */
+
 .hidden {
   display: none;
 }
 
 .message {
-  color: red; /* ou une autre couleur pour les messages */
+  color: red;
 }
 
 .message.success {
-  color: green; /* ou une autre couleur pour les messages de succès */
+  color: green; 
+}
+
+/* Desktop-specific styles */
+@media (min-width: 768px) {
+  nav {
+    transform: none; 
+    width: 250px; 
+  }
+
+  .add-button {
+    display: flex;
+    position: fixed;
+    margin-left: 60rem;
+  }
+
+  main {
+    margin-left: 20px; 
+  }
+
+  .date-box {
+    height: 150px;
+  }
+
+  .filter-box {
+    margin: 20px;
+    width: 50%;
+  }
+
+  .confirm-popup {
+    width: 300px; 
+  }
+  .task-list{
+    width: 60%;
+    height: auto;
+  }
 }

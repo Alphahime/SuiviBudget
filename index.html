@@ -6,11 +6,12 @@
   <title>Suivi de Dépenses Budgétaires</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-database-compat.js"></script>
   <link rel="stylesheet" href="styles.css">
   <style>
-    .hidden { display: none; }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -25,7 +26,7 @@
       <li><a href="#" onclick="showSection('shopping-list')">Liste de courses</a></li>
       <li><a href="#" onclick="showSection('history')">Historique</a></li>
       <li><a href="#" onclick="showSection('settings')">Paramètres</a></li>
-      <button id="logout" class="hidden">Déconnexion</button>
+      <li><a href="#">Déconnexion</a></li>
     </ul>
   </nav>
 
@@ -35,18 +36,19 @@
       <h2 id="total-amount"></h2>
     </div>
     <div class="filter-box" id="filter-box">
-      <input type="date" id="filter-date" name="filter-date" onchange="filterExpensesByDate(event)">
+      <input type="date" id="filter-date" name="filter-date">
       <button id="filter-button" onclick="applyFilter()">Filtrer</button>
+      
     </div>
     
-    <div class="add-button" id="add-expense-button">+</div>
+    <div class="add-button" onclick="window.location.href='add-expense.html'">+</div>
 
     <div class="task-list" id="task-list">
       <!-- Les dépenses seront ajoutées ici dynamiquement -->
     </div>
-    <div class="add-task hidden" id="add-task">
+    <div class="add-task" id="add-task" style="display: none;">
       <h2>Ajouter une dépense</h2>
-      <form id="add-expense-form">
+      <form id="add-expense-form" onsubmit="submitExpenseForm(event)">
         <label for="product-name">Nom du produit</label>
         <input type="text" id="product-name" name="product-name" required>
         
@@ -61,41 +63,60 @@
         <button type="submit">Ajouter</button>
       </form>
     </div>
-    <div id="shopping-list" class="hidden">
+    <div id="shopping-list" style="display: none;">
       <h2>Liste des courses</h2>
       <div class="task-list" id="shopping-list-tasks">
         <!-- Les dépenses seront ajoutées ici dynamiquement -->
       </div>
     </div>
+    <div id="authSection">
+      <div id="signIn" class="bg-white p-6 rounded-lg shadow-md hidden">
+          <form id="signInForm" class="space-y-4">
+              <h1 class="text-2xl font-semibold text-center mb-4">Connexion</h1>
+              <div id="messageBoxSignIn" class="hidden"></div>
+              <label for="signInEmail">Email:</label>
+              <input type="email" id="signInEmail" required class="border p-2 w-full mb-2">
 
-    <!-- Login Form -->
-    <div id="login-section" class="hidden">
-      <h2>Se connecter</h2>
-      <form id="login-form">
-        <label for="login-email">Email</label>
-        <input type="email" id="login-email" required>
-        <label for="login-password">Mot de passe</label>
-        <input type="password" id="login-password" required>
-        <button type="submit">Se connecter</button>
-        <p>Pas encore de compte? <a href="#" id="show-register-form">Inscrivez-vous</a></p>
-      </form>
-    </div>
+              <label for="signInPassword">Mot de passe:</label>
+              <input type="password" id="signInPassword" required class="border p-2 w-full mb-4">
 
-    <!-- Register Form -->
-    <div id="register-section" class="hidden">
-      <h2>Créer un compte</h2>
-      <form id="register-form">
-        <label for="register-email">Email</label>
-        <input type="email" id="register-email" required>
-        <label for="register-password">Mot de passe</label>
-        <input type="password" id="register-password" required>
-        <button type="submit">S'inscrire</button>
-        <p>Déjà un compte? <a href="#" id="show-login-form">Connectez-vous</a></p>
-      </form>
-    </div>
+              <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Connexion</button>
+          </form>
+          <div class="text-center mt-4">
+              <p>Vous n'avez pas de compte ? <a href="#" id="signUpButton" class="text-blue-500">Inscrivez-vous maintenant</a></p>
+          </div>
+      </div>
+<!-- Inscription -->
+      <div id="signup" class="bg-white p-6 rounded-lg shadow-md">
+          <form id="signupForm" class="space-y-4">
+              <h1 class="text-2xl font-semibold text-center mb-4">Inscription</h1>
+              <div id="messageBoxSignUp" class="hidden"></div>
+              <label for="firstName">Prénom:</label>
+              <input type="text" id="firstName" required class="border p-2 w-full mb-2">
+
+              <label for="lastName">Nom:</label>
+              <input type="text" id="lastName" required class="border p-2 w-full mb-2">
+
+              <label for="phone">Téléphone:</label>
+              <input type="tel" id="phone" required class="border p-2 w-full mb-2">
+
+              <label for="email">Email:</label>
+              <input type="email" id="email" required class="border p-2 w-full mb-2">
+
+              <label for="password">Mot de passe:</label>
+              <input type="password" id="password" required class="border p-2 w-full mb-4">
+
+              <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">S'inscrire</button>
+          </form>
+          <div class="text-center mt-4">
+              <p>Vous avez un compte ? <a href="#" id="signInButton" class="text-blue-500">Connectez-vous maintenant</a></p>
+          </div>
+      </div>
+  </div>
   </main>
-
+  <script type="module" src="firebaseConfig.js"></script>
   <script type="module" src="script.js"></script>
+  <script type="module" src="auth.js"></script>
   <script src="sidebar.js"></script>
 </body>
 </html>
